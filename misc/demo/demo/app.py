@@ -1,7 +1,7 @@
 import time
 from io import StringIO
 import os
-from logging import getLogger
+import logging
 
 import requests
 from bs4 import BeautifulSoup
@@ -13,7 +13,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-LOGGER = getLogger('demo')
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s | %(name)s | %(levelname)s | %(message)s', handlers=[logging.StreamHandler()])
+LOGGER = logging.getLogger('demo')
 
 OUTPUT = 'output'
 
@@ -64,7 +66,8 @@ def main():
 
     # save the final result
     final_products_info_df = products_info_df.join(unique_users_per_product).join(total_count_per_product)
-    os.mkdir(OUTPUT)
+
+    os.makedirs(OUTPUT, exist_ok=True)
     final_products_info_df.to_excel(f'{OUTPUT}/products.xlsx')
     users_df.to_excel(f'{OUTPUT}/users.xlsx')
 
@@ -119,13 +122,14 @@ class ShopApi:
 
         if self._last_fetch_time and time_delta < ShopApi.WAIT_TIME:
             sleep = ShopApi.WAIT_TIME - time_delta
-            print(f'{self.__class__.__name__} sleeping for {sleep} seconds')
+            LOGGER.info(f'{self.__class__.__name__} sleeping for {sleep} seconds')
             time.sleep(sleep)
 
         response = requests.get(url)
         self._last_fetch_time = time.time()
 
         if response.status_code != 200:
+            LOGGER.error(f"Failed to retrieve data: {response.status_code}")
             raise RuntimeError(f"Failed to retrieve data: {response.status_code}")
 
         return response.json()
