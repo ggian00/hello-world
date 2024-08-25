@@ -64,6 +64,7 @@ def main():
 
     # save the final result
     final_products_info_df = products_info_df.join(unique_users_per_product).join(total_count_per_product)
+    os.mkdir(OUTPUT)
     final_products_info_df.to_excel(f'{OUTPUT}/products.xlsx')
     users_df.to_excel(f'{OUTPUT}/users.xlsx')
 
