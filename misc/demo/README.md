@@ -26,14 +26,17 @@ Run:
     poetry run demo/app.py
 
 
-Run with docker:
+Run with docker-compose:
 
+    docker compose up
+
+    # Ignore the comments below
     # don't forget to create the .env in the proect root
-    docker build -t demo-python-app .
-    docker run -v $(pwd)/output:/app/output demo-python-app
+    # docker build -t demo-python-app .
+    # docker run -v $(pwd)/output:/app/output demo-python-app
 
     # with one command and autoremove of the image
-    docker run --rm -it -v $(pwd)/output:/app/output $(docker build -q .)
+    # docker run --rm -it -v $(pwd)/output:/app/output $(docker build -q .)
 
 
 
