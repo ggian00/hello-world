@@ -1,6 +1,7 @@
 import time
 from io import StringIO
 import os
+from logging import getLogger
 
 import requests
 from bs4 import BeautifulSoup
@@ -11,6 +12,8 @@ import pandas as pd
 from dotenv import load_dotenv
 
 load_dotenv()
+
+LOGGER = getLogger('demo')
 
 OUTPUT = 'output'
 
@@ -70,12 +73,12 @@ def main():
 
 
 def crawl(url):
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('--headless')
-    driver = webdriver.Chrome(options=chrome_options)
-    #firefox_options = webdriver.FirefoxOptions()
-    #firefox_options.add_arguments('--headless')
-    #driver = webdriver.Firefox(options=firefox_options)
+    #chrome_options = webdriver.ChromeOptions()
+    #chrome_options.add_argument('--headless')
+    #driver = webdriver.Chrome(options=chrome_options)
+    firefox_options = webdriver.FirefoxOptions()
+    firefox_options.add_argument('--headless')
+    driver = webdriver.Firefox(options=firefox_options)
     driver.get(url)
 
     table = driver.find_element(By.CSS_SELECTOR, "#userTable")
